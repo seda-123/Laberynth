@@ -11,6 +11,8 @@ public class PrimeraPantalla extends JFrame {
     private final int midaCasella = 60;
     private JPanel panellJoc;
 
+    public static long tempsInici;
+
     private final int[][] mapa = {
             {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1},
             {1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
@@ -32,12 +34,11 @@ public class PrimeraPantalla extends JFrame {
     };
 
     public PrimeraPantalla() {
+        tempsInici = System.currentTimeMillis();
+
         setTitle("Laberint de Por");
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        ImageIcon icona = new ImageIcon("src/fotos/evil_john_pork.png");
-        setIconImage(icona.getImage());
 
         panellJoc = new JPanel() {
             @Override
@@ -91,7 +92,7 @@ public class PrimeraPantalla extends JFrame {
         JButton botoSeguent = new JButton("SORTIDA");
         botoSeguent.setBounds(29 * midaCasella, 0, midaCasella * 2, midaCasella);
         botoSeguent.setBackground(Color.pink);
-        botoSeguent.setForeground(Color.WHITE);
+        botoSeguent.setForeground(Color.black);
         botoSeguent.setFocusable(false);
         botoSeguent.addActionListener(e -> {
             new SegonaPantalla();
