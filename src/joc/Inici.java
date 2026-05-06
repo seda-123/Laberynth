@@ -3,7 +3,7 @@ package joc;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-
+//hola
 public class Inici {
 
     private JPanel panelPrincipal;
