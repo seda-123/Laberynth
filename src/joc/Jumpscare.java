@@ -6,14 +6,14 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.io.File;
 
-public class Secret extends JFrame {
+public class Jumpscare extends JFrame {
     private BufferedImage img;
 
-    public Secret() {
+    public Jumpscare() {
         setUndecorated(true);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         try {
-            img = ImageIO.read(new File("src/fotos/john_pork_RIP.png"));
+            img = ImageIO.read(new File("src/fotos/evil_john_pork.png"));
         } catch (Exception e) {}
 
         JPanel p = new JPanel() {
@@ -21,11 +21,10 @@ public class Secret extends JFrame {
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 if (img != null) g.drawImage(img, 0, 0, getWidth(), getHeight(), null);
-                else setBackground(new Color(60, 75, 120));
             }
         };
         add(p);
         setVisible(true);
-        new Timer(7000, e -> System.exit(0)).start();
+        new Timer(3000, e -> System.exit(0)).start();
     }
 }
