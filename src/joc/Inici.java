@@ -26,6 +26,8 @@ public class Inici {
         prepararCampNom();
         botoComencar();
         botosortir();
+        mostrarRanking();
+
     }
 
     public static void main(String[] args) {
@@ -37,6 +39,25 @@ public class Inici {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setVisible(true);
+    }
+
+    private void mostrarRanking() {
+        JTextArea ranking = new JTextArea();
+        ranking.setBounds(30, 300, 300, 400);
+        ranking.setEditable(false);
+        ranking.setOpaque(false);
+        ranking.setForeground(Color.WHITE);
+        ranking.setFont(new Font("Arial", Font.BOLD, 20));
+
+        String text = "TOP 5 SCORES:\n\n";
+        java.util.ArrayList<String> dades = bd.obtenirTop5();
+
+        for (int i = 0; i < dades.size(); i++) {
+            text += (i + 1) + ". " + dades.get(i) + "\n";
+        }
+
+        ranking.setText(text);
+        panelPrincipal.add(ranking);
     }
 
     private void titol() {
@@ -108,4 +129,5 @@ public class Inici {
         Cursor c = Toolkit.getDefaultToolkit().createCustomCursor(cursorImg, new Point(mida/2, mida/2), "Punt");
         panell.setCursor(c);
     }
+
 }
