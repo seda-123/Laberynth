@@ -2,13 +2,20 @@ package joc;
 import java.sql.*;
 import java.util.ArrayList;
 
+/**
+ * Gestora de la connexió i les operacions amb la base de dades MySQL
+ * per al joc del laberint
+ */
 public class bd {
     private static final String db_url = "jdbc:mysql://localhost:3306/laberynth";
     private static final String user = "seda";
     private static final String pswd = "seda";
 
-
-
+    /**
+     * Insereix un nou jugador a la base de dades i en retorna l'ID generat.
+     * * @param nom El nom del jugador que es vol registrar.
+     * @return L'ID autogenerat del jugador, o -1 si hi ha hagut un error.
+     */
     public static int insertUser(String nom) {
         String sql = "INSERT INTO jugadors (nom) VALUES (?)";
         int idGenerat = -1;
@@ -28,6 +35,10 @@ public class bd {
         return idGenerat;
     }
 
+    /**
+     * Obté els 5 millors temps registrats al joc ordenats de menor a major.
+     * * @return Una llista d'estrings amb el format "Nom: Temps s".
+     */
     public static ArrayList<String> obtenirTop5() {
         ArrayList<String> llista = new ArrayList<>();
         String sql = "SELECT j.nom, MIN(t.temps) AS best_score " +
@@ -49,7 +60,12 @@ public class bd {
         return llista;
     }
 
-    public static void insertTemps(int temps, int idJugador)  {
+    /**
+     * Insereix una nova marca de temps associada a un jugador.
+     * * @param temps El temps en segons aconseguit pel jugador.
+     * @param idJugador L'identificador únic del jugador a la base de dades.
+     */
+    public static void insertTemps(int temps, int idJugador) {
         String sql = "INSERT INTO temps (temps, id_jugador) VALUES (?, ?)";
         try {
             Connection con = DriverManager.getConnection(db_url, user, pswd);
@@ -57,31 +73,36 @@ public class bd {
             ps.setInt(1, temps);
             ps.setInt(2, idJugador);
             ps.executeUpdate();
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Erro ao inserir temps: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
-    public static int getUserId (String userName){
-      String sql = "select id_jugador from jugadors where nom = (?)";
-      int id = -1;
-      try  {
-          Connection con = DriverManager.getConnection(db_url, user, pswd);
-          PreparedStatement ps = con.prepareStatement(sql);
+    /**
+     * Cerca i retorna l'ID d'un jugador a partir del seu nom d'usuari.
+     * * @param userName El nom de l'usuari que es vol cercar.
+     * @return L'ID del jugador, o -1 si no s'ha trobat o hi ha un error.
+     */
+    public static int getUserId(String userName) {
+        String sql = "select id_jugador from jugadors where nom = (?)";
+        int id = -1;
+        try {
+            Connection con = DriverManager.getConnection(db_url, user, pswd);
+            PreparedStatement ps = con.prepareStatement(sql);
 
-          ps.setString(1 , userName);
-          ResultSet rs = ps.executeQuery();
-          if (rs.next()) {
-              id = rs.getInt("id_jugador");
-          }
-          rs.close();
-          ps.close();
-          con.close();
-          }catch (Exception e){
-          System.out.println("Erro ao inserir jugador: " + e.getMessage());
-          e.printStackTrace();
-      }
-      return id;
+            ps.setString(1, userName);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                id = rs.getInt("id_jugador");
+            }
+            rs.close();
+            ps.close();
+            con.close();
+        } catch (Exception e) {
+            System.out.println("Erro ao inserir jugador: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return id;
     }
 }

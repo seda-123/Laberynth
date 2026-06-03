@@ -4,15 +4,18 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.SQLException;
 
+/**
+ * Segon nivell del joc. Conté un passadís estret recte.
+ * Si el jugador s'acosta al final de la línia activa un Jumpscare instantani.
+ */
 public class SegonaPantalla extends JFrame {
 
     private final int midaCasella = 60;
     private JPanel panellJoc;
     private boolean sustoActivat = false;
 
-
+    /** Matriu de 17x32 que defineix el mapa del segon nivell (passadís horitzontal central). */
     private final int[][] mapa = {
             {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
             {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
@@ -33,6 +36,10 @@ public class SegonaPantalla extends JFrame {
             {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
     };
 
+    /**
+     * Constructor de la segona pantalla. Col·loca el ratolí a l'origen de la recta (0,8)
+     * i escolta el moviment de l'usuari cap a la dreta per activar el Jumpscare.
+     */
     public SegonaPantalla() {
         setTitle("Nivell 2");
         setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -60,7 +67,7 @@ public class SegonaPantalla extends JFrame {
                 if (fila >= 0 && fila < 17 && col >= 0 && col < 32) {
                     if (mapa[fila][col] == 1) posicionarRatoli(0, 8);
 
-
+                    // Si s'arriba a la columna 24 o superior es llança el "sust"
                     if (col >= 24 && !sustoActivat) {
                         sustoActivat = true;
                         new Jumpscare();
@@ -71,6 +78,10 @@ public class SegonaPantalla extends JFrame {
         });
     }
 
+    /**
+     * Dibuixa el passadís de rajoles i el personatge "John Pork" al final d'aquest.
+     * * @param g L'objecte Graphics amb el que es dibuixa la interfície.
+     */
     private void dibuixarMapa(Graphics g) {
         Image imgParet = new ImageIcon("src/fotos/paret.png").getImage();
         Image imgTerra = new ImageIcon("src/fotos/terra.png").getImage();
@@ -85,6 +96,11 @@ public class SegonaPantalla extends JFrame {
         g.drawImage(imgJohn, 31*midaCasella, 8*midaCasella, midaCasella, midaCasella, null);
     }
 
+    /**
+     * Transporta el cursor instantàniament a una posició fixa utilitzant la classe Robot.
+     * * @param col Columna objectiu.
+     * @param fila Fila objectiu.
+     */
     private void posicionarRatoli(int col, int fila) {
         if (!panellJoc.isShowing()) return;
         try {

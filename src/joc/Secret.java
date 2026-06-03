@@ -5,16 +5,26 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.io.File;
-import java.sql.SQLException;
 
+/**
+ * Finestra secreta o "Easter Egg" accessible des d'un botó invisible al Nivell 1.
+ * Desa el record directament a la BD i tanca el joc en 7 segons de manera pacífica.
+ */
 public class Secret extends JFrame {
     private BufferedImage img;
+    /** Emmagatzema el temps total de la partida. */
     public int tempsTotalSegons;
-    public Secret()  {
+
+    /**
+     * Constructor de la finestra secreta. Registra la marca de temps del camí alternatiu
+     * i mostra una pantalla d'homenatge (RIP) amb una durada de 7 segons.
+     */
+    public Secret() {
         long tempsFinal = System.currentTimeMillis();
-         int tempsTotalSegons = (int) ((tempsFinal - PrimeraPantalla.tempsInici) / 1000);
-         bd.insertUser(Inici.nomUsuari);
+        int tempsTotalSegons = (int) ((tempsFinal - PrimeraPantalla.tempsInici) / 1000);
+        bd.insertUser(Inici.nomUsuari);
         bd.insertTemps(tempsTotalSegons, bd.getUserId(Inici.nomUsuari));
+
         setUndecorated(true);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         try { img = ImageIO.read(new File("src/fotos/john_pork_RIP.png")); } catch (Exception e) {}
@@ -32,6 +42,8 @@ public class Secret extends JFrame {
         };
         add(p);
         setVisible(true);
+
+        // Tanca el joc en 7 segons
         new Timer(7000, e -> System.exit(0)).start();
     }
 }

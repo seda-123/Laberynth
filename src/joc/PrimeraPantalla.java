@@ -5,15 +5,20 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
-import java.sql.SQLException;
 
+/**
+ * Primera pantalla interactiva del laberint.
+ * Controla el moviment del ratolí per evitar que l'usuari toqui les parets.
+ */
 public class PrimeraPantalla extends JFrame {
 
     private final int midaCasella = 60;
     private JPanel panellJoc;
 
+    /** Marca de temps inicial (en mil·lisegons) per calcular la durada de la partida. */
     public static long tempsInici;
 
+    /** Matriu de 17x32 que defineix el mapa. (1 i 2 = Parets, 0 = Camí). */
     private final int[][] mapa = {
             {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1},
             {1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
@@ -34,6 +39,10 @@ public class PrimeraPantalla extends JFrame {
             {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
     };
 
+    /**
+     * Constructor de la primera pantalla. Engega el temporitzador, genera la interfície
+     * i afegeix els "listeners" per controlar que el ratolí no surti del camí recte.
+     */
     public PrimeraPantalla() {
         tempsInici = System.currentTimeMillis();
 
@@ -53,7 +62,6 @@ public class PrimeraPantalla extends JFrame {
         add(panellJoc);
 
         crearBotons(panellJoc);
-
         setVisible(true);
 
         posicionarRatoli(1, 15);
@@ -67,6 +75,7 @@ public class PrimeraPantalla extends JFrame {
 
                 if (fila >= 0 && fila < mapa.length && col >= 0 && col < mapa[0].length) {
                     if (mapa[fila][col] == 1) {
+                        // Si l'usuari toca una paret (1), es reajusta la posició a l'inici
                         posicionarRatoli(1, 15);
                     }
                 }
@@ -74,6 +83,10 @@ public class PrimeraPantalla extends JFrame {
         });
     }
 
+    /**
+     * Renderitza de forma gràfica el laberint pintant parets o terra segons la matriu mapa.
+     * * @param g L'objecte Graphics amb el que es dibuixa.
+     */
     private void dibuixarLaberint(Graphics g) {
         Image imgParet = new ImageIcon("src/fotos/paret.png").getImage();
         Image imgTerra = new ImageIcon("src/fotos/terra.png").getImage();
@@ -89,6 +102,10 @@ public class PrimeraPantalla extends JFrame {
         }
     }
 
+    /**
+     * Crea el botó transparent secret i el botó de sortida oficial per canviar de pantalla.
+     * * @param panell El panell al qual s'afegiran els botons creats.
+     */
     private void crearBotons(JPanel panell) {
         JButton botoSeguent = new JButton("SORTIDA");
         botoSeguent.setBounds(29 * midaCasella, 0, midaCasella * 2, midaCasella);
@@ -113,6 +130,11 @@ public class PrimeraPantalla extends JFrame {
         panell.add(botoSecret);
     }
 
+    /**
+     * Força el cursor del ratolí a moure's instantàniament a unes coordenades de casella concretes.
+     * * @param col Columna de la casella de destí.
+     * @param fila Fila de la casella de destí.
+     */
     private void posicionarRatoli(int col, int fila) {
         if (!panellJoc.isShowing()) return;
         try {
@@ -122,6 +144,10 @@ public class PrimeraPantalla extends JFrame {
         } catch (Exception ex) {}
     }
 
+    /**
+     * Aplica el punter de color grog personalitzat al panell.
+     * * @param panell El panell on es vol modificar el cursor.
+     */
     private void aplicarCursorGroc(JPanel panell) {
         BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = cursorImg.createGraphics();

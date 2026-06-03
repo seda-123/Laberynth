@@ -4,6 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+/**
+ * Finestres inicial de l'aplicació on el jugador introdueix el seu nom
+ * i pot començar la partida o sortir del joc.
+ */
 public class Inici {
 
     private JPanel panelPrincipal;
@@ -12,9 +16,13 @@ public class Inici {
     private JButton buttoSortir;
     private JTextField campNom;
 
-
+    /** Emmagatzema el nom del jugador actual accessible des d'altres pantalles. */
     public static String nomUsuari = "";
 
+    /**
+     * Constructor de la finestra d'inici. Inicialitza els components visuals
+     * i configura el panell principal del menú.
+     */
     public Inici() {
         panelPrincipal = new JPanel();
         panelPrincipal.setLayout(null);
@@ -26,10 +34,12 @@ public class Inici {
         prepararCampNom();
         botoComencar();
         botosortir();
-        mostrarRanking();
-
     }
 
+    /**
+     * Mètode principal que arranca l'aplicació del joc.
+     * * @param args Arguments de la línia de comandes (no utilitzats).
+     */
     public static void main(String[] args) {
         JFrame frame = new JFrame("Inici");
         Inici laMevaApp = new Inici();
@@ -41,25 +51,9 @@ public class Inici {
         frame.setVisible(true);
     }
 
-    private void mostrarRanking() {
-        JTextArea ranking = new JTextArea();
-        ranking.setBounds(30, 300, 300, 400);
-        ranking.setEditable(false);
-        ranking.setOpaque(false);
-        ranking.setForeground(Color.WHITE);
-        ranking.setFont(new Font("Arial", Font.BOLD, 20));
-
-        String text = "TOP 5 SCORES:\n\n";
-        java.util.ArrayList<String> dades = bd.obtenirTop5();
-
-        for (int i = 0; i < dades.size(); i++) {
-            text += (i + 1) + ". " + dades.get(i) + "\n";
-        }
-
-        ranking.setText(text);
-        panelPrincipal.add(ranking);
-    }
-
+    /**
+     * Crea i configura l'estil del títol principal del joc.
+     */
     private void titol() {
         Titol = new JTextField("Laberynth");
         Titol.setFont(new Font("Chiller", Font.BOLD, 250));
@@ -72,7 +66,9 @@ public class Inici {
         panelPrincipal.add(Titol);
     }
 
-
+    /**
+     * Prepara l'etiqueta i el camp de text per tal que l'usuari escrigui el seu nom.
+     */
     private void prepararCampNom() {
         JLabel Nom = new JLabel("ESCRIU EL TEU NOM:");
         Nom.setFont(new Font("Chiller", Font.BOLD, 60));
@@ -88,6 +84,9 @@ public class Inici {
         panelPrincipal.add(campNom);
     }
 
+    /**
+     * Crea el botó per començar la partida, desa el nom i obre la primera pantalla.
+     */
     private void botoComencar() {
         buttoPantalla1 = new JButton("Començar");
         buttoPantalla1.setFont(new Font("Chiller", Font.BOLD, 120));
@@ -109,6 +108,9 @@ public class Inici {
         panelPrincipal.add(buttoPantalla1);
     }
 
+    /**
+     * Crea el botó de sortir que tanca automàticament l'aplicació.
+     */
     private void botosortir() {
         buttoSortir = new JButton("Sortir");
         buttoSortir.setFont(new Font("Chiller", Font.BOLD, 120));
@@ -119,6 +121,10 @@ public class Inici {
         panelPrincipal.add(buttoSortir);
     }
 
+    /**
+     * Modifica el cursor del ratolí per defecte per un cercle de color grog.
+     * * @param panell El panell on s'aplicarà el cursor personalitzat.
+     */
     private void aplicarCursorGroc(JPanel panell) {
         int mida = 10;
         BufferedImage cursorImg = new BufferedImage(mida, mida, BufferedImage.TYPE_INT_ARGB);
@@ -129,5 +135,4 @@ public class Inici {
         Cursor c = Toolkit.getDefaultToolkit().createCustomCursor(cursorImg, new Point(mida/2, mida/2), "Punt");
         panell.setCursor(c);
     }
-
 }
